@@ -1,0 +1,7 @@
+#!/bin/bash
+# Sandwalk v2 pre-install: stop the running daemon cleanly before replacing the
+# binary so the upgrade can't race a live scan.
+set +e
+launchctl bootout system/com.sandwalk.daemon 2>/dev/null
+pkill -f "sandwalk daemon" 2>/dev/null
+exit 0
