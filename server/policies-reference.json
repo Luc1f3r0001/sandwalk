@@ -1,0 +1,97 @@
+{
+  "version": "2.2.0",
+  "last_updated": "2026-06-25T09:09:06Z",
+  "exclude_detectors": [
+    "SlackWebhook",
+    "GoogleGeminiAPIKey",
+    "GCPApplicationDefaultCredentials",
+    "GoogleOauth2",
+    "JWT",
+    "GenericCredential",
+    "GenericAPIKey"
+  ],
+  "custom_detectors": [],
+  "exclude_paths": [
+    "/private/var/log/secrets-scanner",
+    "/var/log/secrets-scanner",
+    "/private/var/log/sandwalk",
+    "/var/log/sandwalk",
+    "/.claude-odyssey",
+    "/nuclei-templates",
+    "/private/var/root/.cache",
+    "/var/root/.cache"
+  ],
+  "checks_override": {
+    "slack_webhook": false
+  },
+  "verify_credentials": true,
+  "ssh_require_no_passphrase": true,
+  "git_require_verified": true,
+  "require_all_verified": true,
+  "patterns": {
+    "aws_access_key_id": {
+      "enabled": true
+    },
+    "aws_secret_access_key": {
+      "enabled": true
+    },
+    "aws_session_token": {
+      "enabled": true
+    },
+    "github_pat_classic": {
+      "enabled": true
+    },
+    "github_pat_fine_grained": {
+      "enabled": true
+    },
+    "github_oauth_token": {
+      "enabled": true
+    },
+    "gitlab_pat": {
+      "enabled": true
+    },
+    "slack_bot_token": {
+      "enabled": false
+    },
+    "slack_user_token": {
+      "enabled": false
+    },
+    "slack_webhook": {
+      "enabled": false
+    },
+    "stripe_live_secret": {
+      "enabled": true
+    },
+    "razorpay_key_id": {
+      "enabled": true
+    },
+    "openai_key": {
+      "enabled": true
+    },
+    "anthropic_key": {
+      "enabled": true
+    },
+    "google_api_key": {
+      "enabled": true
+    },
+    "gcp_service_account": {
+      "enabled": true
+    },
+    "npm_token": {
+      "enabled": true
+    },
+    "pypi_token": {
+      "enabled": true
+    },
+    "dockerhub_pat": {
+      "enabled": true
+    },
+    "ssh_private_key": {
+      "enabled": true
+    }
+  },
+  "metadata": {
+    "source": "s3",
+    "notes": "This is the source of truth for all scanner configuration. Changes here take effect within 30 minutes on all agents."
+  }
+}

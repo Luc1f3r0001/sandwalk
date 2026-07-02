@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Root LaunchDaemon: single Go binary (scanner + watcher + uploader). -->
+    <key>Label</key>
+    <string>com.sandwalk.daemon</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/sandwalk/bin/sandwalk</string>
+        <string>daemon</string>
+    </array>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:/usr/local/bin</string>
+        <key>SCANNER_SERVER_URL</key>
+        <string>https://api.sandwalk.example.com</string>
+        <key>DASHBOARD_URL</key>
+        <string>https://sandwalk.example.com</string>
+        <key>AGENT_KEY</key>
+        <string>__AGENT_KEY__</string>
+        <key>SANDWALK_KINGFISHER</key>
+        <string>/opt/sandwalk/bin/kingfisher</string>
+    </dict>
+
+    <!-- Runs as root — DO NOT add UserName key -->
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>ThrottleInterval</key>
+    <integer>30</integer>
+
+    <key>StandardOutPath</key>
+    <string>/var/log/sandwalk/daemon.log</string>
+    <key>StandardErrorPath</key>
+    <string>/var/log/sandwalk/daemon.log</string>
+</dict>
+</plist>

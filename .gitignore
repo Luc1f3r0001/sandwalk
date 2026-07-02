@@ -1,0 +1,37 @@
+# Build artifacts
+build/
+releases/
+bin/
+*.pkg
+
+# Go
+agent/sandwalk
+*.test
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Dashboard
+dashboard/node_modules/
+dashboard/dist/
+
+# SQLite manifests / local DBs
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite-*
+
+# Local secrets — NEVER commit
+.sandwalk-signing/
+*.p12
+*.keychain-db
+agent-key
+
+# macOS
+.DS_Store

@@ -1,0 +1,45 @@
+#!/bin/bash
+# Sandwalk post-install: single Go binary + bundled Kingfisher. Runs as root
+# inside the macOS .pkg installer.
+set -e
+
+INSTALL_DIR="/opt/sandwalk"
+DAEMON_PLIST="/Library/LaunchDaemons/com.sandwalk.daemon.plist"
+DAEMON_LABEL="com.sandwalk.daemon"
+
+echo "[1/5] Creating directories..."
+mkdir -p "$INSTALL_DIR/bin" /var/db/sandwalk /var/log/sandwalk
+chmod 755 "$INSTALL_DIR/bin"
+
+echo "[2/5] Binaries..."
+# Payload already placed sandwalk + kingfisher under /opt/sandwalk/bin.
+chmod +x "$INSTALL_DIR/bin/sandwalk" "$INSTALL_DIR/bin/kingfisher"
+"$INSTALL_DIR/bin/sandwalk" version || true
+
+echo "[3/5] CLI symlink..."
+ln -sf "$INSTALL_DIR/bin/sandwalk" /usr/local/bin/sandwalk
+
+echo "[4/5] Stopping any previous daemon..."
+launchctl bootout system/"$DAEMON_LABEL" 2>/dev/null || true
+# Kill any orphaned daemon not registered with launchd. Loop to catch a launchd
+# KeepAlive resurrection of the old binary mid-install.
+for _ in 1 2 3; do
+    pkill -9 -f "sandwalk daemon" 2>/dev/null || true
+    sleep 1
+done
+
+echo "[5/5] Installing + loading LaunchDaemon..."
+cp "$INSTALL_DIR/com.sandwalk.daemon.plist" "$DAEMON_PLIST"
+chown root:wheel "$DAEMON_PLIST"
+chmod 644 "$DAEMON_PLIST"
+launchctl bootstrap system "$DAEMON_PLIST" 2>/dev/null || launchctl load "$DAEMON_PLIST"
+launchctl kickstart -k system/"$DAEMON_LABEL" 2>/dev/null || true
+
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "  ✓ Sandwalk installed (Go agent + Kingfisher)"
+echo "  Binary    : $INSTALL_DIR/bin/sandwalk"
+echo "  Manifest  : /var/db/sandwalk/manifest.sqlite"
+echo "  Logs      : /var/log/sandwalk/daemon.log"
+echo "  CLI       : sandwalk status"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+exit 0
