@@ -1,0 +1,4 @@
+# Vendored third-party dependency bundled into the Lambda deployment package.
+# Exclude it from GitHub Linguist language statistics (it is not our source).
+terraform/lambda/consumer/pymysql/** linguist-vendored
+terraform/lambda/consumer/pymysql-*.dist-info/** linguist-vendored
